@@ -35,6 +35,5 @@ export const getColumns = (numOfColumns, min, max) => {
       if (value === max) arr[numOfColumns - 1] += count;
     }
   });
-  console.log(arr);
   return arr;
 };

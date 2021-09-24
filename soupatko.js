@@ -45,12 +45,14 @@ const drawGraph = (height) => {
 let checkTimeout;
 
 const drawResult = () => {
-  const sortedHandles = [graphValues.correctResult, Number(slider.noUiSlider.get())].sort((a, b) => a - b);
+  const correct = Number(slider.noUiSlider.get()) === graphValues.correctResult;
+  const sortedHandles = (correct ? [graphValues.correctResult] : [graphValues.correctResult, Number(slider.noUiSlider.get())])
+    .sort((a, b) => a - b);
   const correctHandleIndex = sortedHandles.findIndex((value) => value === graphValues.correctResult);
   const newOptions = {
     ...sliderOptions,
     start: sortedHandles,
-    tooltips: [true, true],
+    tooltips: correct ? [true] : [true, true],
   };
   slider.noUiSlider.destroy();
   noUiSlider.create(slider, newOptions);
