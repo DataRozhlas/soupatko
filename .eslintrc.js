@@ -4,11 +4,12 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'airbnb-base',
+    "airbnb-base",
   ],
   parserOptions: {
     ecmaVersion: 12,
   },
   rules: {
+    quotes: ["error", "double"],
   },
 };
