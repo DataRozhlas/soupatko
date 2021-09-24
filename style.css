@@ -3,22 +3,22 @@
 }
 
 .slider .noUi-handle {
+  border-radius: 0;
+  border-radius: 0;
+  background: #31383d;
   height: 18px;
   width: 18px;
-  top: -5px;
-  right: -9px; /* half the width */
-  border-radius: 9px;
-  background: green;
+  top: -1px;
+  right: -9px;
 }
 
-.slider .correctAnswer > div {
-  background: red;
+.slider .correctAnswer>div {
+  background: rgb(165, 216, 98);
 }
 
-.graphContainer > div {
+.graphContainer>div {
   display: inline-block;
-  background: blue;
+  background: #2980b9;
   border-left: 2px solid white;
   border-right: 2px solid white;
 }
-

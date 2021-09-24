@@ -51,9 +51,11 @@ slider.noUiSlider.on("change", (values, handle) => {
 
 const drawGraph = () => {
   const container = document.getElementById("graphContainer");
-  getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max).forEach((column) => {
+  const columnArray = getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max);
+  const column100 = Math.max(...columnArray);
+  columnArray.forEach((column) => {
     const columnDiv = document.createElement("div");
-    columnDiv.style.height = `${column}px`;
+    columnDiv.style.height = `${(column / column100) * 300}px`;
     columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
     container.appendChild(columnDiv);
   });
