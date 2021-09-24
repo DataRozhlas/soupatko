@@ -1,5 +1,6 @@
 /* global noUiSlider, wNumb */
-import { correctResult, tips } from "./values.js";
+// eslint-disable-next-line import/extensions
+import { correctResult } from "./values.js";
 
 const slider = document.getElementById("slider");
 const selectedValue = document.getElementById("selectedValue");
