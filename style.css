@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .slider .noUi-handle {
   height: 18px;
   width: 18px;
@@ -10,3 +14,11 @@
 .slider .correctAnswer > div {
   background: red;
 }
+
+.graphContainer > div {
+  display: inline-block;
+  background: blue;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+}
+

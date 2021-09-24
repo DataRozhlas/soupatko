@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global noUiSlider, wNumb */
 // eslint-disable-next-line import/extensions
-import { graphValues, countColumns } from "./values.js";
+import { graphValues, getColumns } from "./values.js";
 
 const slider = document.getElementById("slider");
 const selectedValue = document.getElementById("selectedValue");
@@ -14,6 +14,12 @@ const sliderOptions = {
   range: {
     min: graphValues.min,
     max: graphValues.max,
+  },
+  pips: {
+    mode: 'count',
+    values: 2,
+    density: 100,
+    stepped: true,
   },
   format: wNumb({ decimals: 0 }),
   keyboardSupport: true,
@@ -42,3 +48,15 @@ slider.noUiSlider.on("change", (values, handle) => {
   clearTimeout(checkTimeout);
   checkTimeout = setTimeout(drawResult, 1000);
 });
+
+const drawGraph = () => {
+  const container = document.getElementById("graphContainer");
+  getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max).forEach((column) => {
+    const columnDiv = document.createElement("div");
+    columnDiv.style.height = `${column}px`;
+    columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
+    container.appendChild(columnDiv);
+  });
+};
+
+drawGraph();
