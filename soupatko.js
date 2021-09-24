@@ -3,6 +3,7 @@ import { correctResult, tips } from "./values.js";
 
 const slider = document.getElementById("slider");
 const selectedValue = document.getElementById("selectedValue");
+const origins = slider.getElementsByClassName("noUi-origin");
 
 const sliderOptions = {
   start: [100],
@@ -33,6 +34,8 @@ const drawResult = () => {
   };
   slider.noUiSlider.destroy();
   noUiSlider.create(slider, newOptions);
+  slider.setAttribute("disabled", true);
+  origins[0].classList.add("correctAnswer");
 };
 
 slider.noUiSlider.on("change", (values, handle) => {
