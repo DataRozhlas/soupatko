@@ -1,25 +1,21 @@
+/* eslint-disable max-len */
 /* global noUiSlider, wNumb */
 // eslint-disable-next-line import/extensions
-import { correctResult } from "./values.js";
+import { graphValues, countColumns } from "./values.js";
 
 const slider = document.getElementById("slider");
 const selectedValue = document.getElementById("selectedValue");
 const origins = slider.getElementsByClassName("noUi-origin");
 
 const sliderOptions = {
-  start: [100],
+  start: [(graphValues.max + graphValues.min) / 2],
   step: 1,
   tooltips: [true],
   range: {
-    min: 0,
-    max: 200,
+    min: graphValues.min,
+    max: graphValues.max,
   },
   format: wNumb({ decimals: 0 }),
-  pips: {
-    mode: "positions",
-    values: [0, 25, 50, 75, 100],
-    density: 4,
-  },
   keyboardSupport: true,
 };
 
@@ -28,15 +24,17 @@ noUiSlider.create(slider, sliderOptions);
 let checkTimeout;
 
 const drawResult = () => {
+  const sortedHandles = [graphValues.correctResult, Number(slider.noUiSlider.get())].sort((a, b) => a - b);
+  const correctHandleIndex = sortedHandles.findIndex((value) => value === graphValues.correctResult);
   const newOptions = {
     ...sliderOptions,
-    start: [correctResult, Number(slider.noUiSlider.get())].sort((a, b) => a - b),
+    start: sortedHandles,
     tooltips: [true, true],
   };
   slider.noUiSlider.destroy();
   noUiSlider.create(slider, newOptions);
   slider.setAttribute("disabled", true);
-  origins[0].classList.add("correctAnswer");
+  origins[correctHandleIndex].classList.add("correctAnswer");
 };
 
 slider.noUiSlider.on("change", (values, handle) => {
