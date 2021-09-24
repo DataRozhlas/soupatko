@@ -3,9 +3,13 @@
 // eslint-disable-next-line import/extensions
 import { graphValues, getColumns } from "./values.js";
 
+const height = 300;
+
 const slider = document.getElementById("slider");
 const selectedValue = document.getElementById("selectedValue");
 const origins = slider.getElementsByClassName("noUi-origin");
+const container = document.getElementById("graphContainer");
+container.style.height = `${height}px`;
 
 const sliderOptions = {
   start: [(graphValues.max + graphValues.min) / 2],
@@ -16,7 +20,7 @@ const sliderOptions = {
     max: graphValues.max,
   },
   pips: {
-    mode: 'count',
+    mode: "count",
     values: 2,
     density: 100,
     stepped: true,
@@ -26,6 +30,17 @@ const sliderOptions = {
 };
 
 noUiSlider.create(slider, sliderOptions);
+
+const drawGraph = (height) => {
+  const columnArray = getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max);
+  const column100 = Math.max(...columnArray);
+  columnArray.forEach((column) => {
+    const columnDiv = document.createElement("div");
+    columnDiv.style.height = `${(column / column100) * height}px`;
+    columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
+    container.appendChild(columnDiv);
+  });
+};
 
 let checkTimeout;
 
@@ -41,6 +56,7 @@ const drawResult = () => {
   noUiSlider.create(slider, newOptions);
   slider.setAttribute("disabled", true);
   origins[correctHandleIndex].classList.add("correctAnswer");
+  drawGraph(height);
 };
 
 slider.noUiSlider.on("change", (values, handle) => {
@@ -48,17 +64,3 @@ slider.noUiSlider.on("change", (values, handle) => {
   clearTimeout(checkTimeout);
   checkTimeout = setTimeout(drawResult, 1000);
 });
-
-const drawGraph = () => {
-  const container = document.getElementById("graphContainer");
-  const columnArray = getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max);
-  const column100 = Math.max(...columnArray);
-  columnArray.forEach((column) => {
-    const columnDiv = document.createElement("div");
-    columnDiv.style.height = `${(column / column100) * 300}px`;
-    columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
-    container.appendChild(columnDiv);
-  });
-};
-
-drawGraph();
