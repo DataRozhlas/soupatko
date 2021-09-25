@@ -17,7 +17,7 @@ export const graphValues = {
   correctResult: 7,
 };
 
-const randomNumbers = createRandomNumberArray(1000, graphValues.min, graphValues.max);
+const randomNumbers = createRandomNumberArray(100, graphValues.min, graphValues.max);
 
 const counter = {};
 randomNumbers.forEach((num) => {
