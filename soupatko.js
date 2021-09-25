@@ -45,6 +45,7 @@ const drawGraph = (size) => {
 let checkTimeout;
 
 const drawResult = () => {
+  console.log(Number(slider.noUiSlider.get()));
   const correct = Number(slider.noUiSlider.get()) === graphValues.correctResult;
   const sortedHandles = (correct ? [graphValues.correctResult] : [graphValues.correctResult, Number(slider.noUiSlider.get())])
     .sort((a, b) => a - b);
@@ -67,8 +68,10 @@ const drawResult = () => {
   drawGraph(height);
 };
 
-slider.noUiSlider.on("change", () => {
-  console.log(Number(slider.noUiSlider.get()));
-  clearTimeout(checkTimeout);
+slider.noUiSlider.on("end", () => {
   checkTimeout = setTimeout(drawResult, 1000);
+});
+
+slider.noUiSlider.on("start", () => {
+  clearTimeout(checkTimeout);
 });
