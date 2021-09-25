@@ -16,9 +16,17 @@
   background: rgb(165, 216, 98);
 }
 
+.graphContainer {
+  display: flex;
+  align-items: flex-end;
+}
+
 .graphContainer>div {
   display: inline-block;
   background: #2980b9;
   border-left: 2px solid white;
   border-right: 2px solid white;
+  height: 1px;
+  transition: height 0.8s;
+  transition-timing-function: cubic-bezier(0,0,0.58,1);
 }

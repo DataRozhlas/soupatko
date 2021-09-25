@@ -36,7 +36,7 @@ const drawGraph = (height) => {
   const column100 = Math.max(...columnArray);
   columnArray.forEach((column) => {
     const columnDiv = document.createElement("div");
-    columnDiv.style.height = `${(column / column100) * height}px`;
+    setTimeout(() => {columnDiv.style.height = `${(column / column100) * height}px`; }, 1);
     columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
     container.appendChild(columnDiv);
   });
