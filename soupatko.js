@@ -68,10 +68,10 @@ const drawResult = () => {
   drawGraph(height);
 };
 
-slider.noUiSlider.on("end", () => {
+slider.noUiSlider.on("set", () => {
   checkTimeout = setTimeout(drawResult, 1000);
 });
 
-slider.noUiSlider.on("start", () => {
+slider.noUiSlider.on("slide", () => {
   clearTimeout(checkTimeout);
 });
