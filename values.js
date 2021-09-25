@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 const getRandomIntInclusive = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const createRandomNumberArray = (elementCount, min, max) => {

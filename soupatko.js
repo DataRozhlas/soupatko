@@ -31,12 +31,12 @@ const sliderOptions = {
 
 noUiSlider.create(slider, sliderOptions);
 
-const drawGraph = (height) => {
+const drawGraph = (size) => {
   const columnArray = getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max);
   const column100 = Math.max(...columnArray);
   columnArray.forEach((column) => {
     const columnDiv = document.createElement("div");
-    setTimeout(() => {columnDiv.style.height = `${(column / column100) * height}px`; }, 1);
+    setTimeout(() => { columnDiv.style.height = `${(column / column100) * size}px`; }, 1);
     columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
     container.appendChild(columnDiv);
   });
