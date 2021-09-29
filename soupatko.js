@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global noUiSlider, wNumb */
 // eslint-disable-next-line import/extensions
-import { graphValues, getColumns } from "./values.js";
+import { graphValues, getColumns, answers } from "./values.js";
 
 const height = 300;
 
@@ -9,6 +9,7 @@ const slider = document.getElementById("slider");
 const origins = slider.getElementsByClassName("noUi-origin");
 const tooltips = slider.getElementsByClassName("noUi-tooltip");
 const container = document.getElementById("graphContainer");
+const radio = document.getElementById("inputRadio");
 container.style.height = `${height}px`;
 
 const sliderOptions = {
@@ -46,6 +47,11 @@ let checkTimeout;
 
 const drawResult = () => {
   console.log(Number(slider.noUiSlider.get()));
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://8hgzzytibb.execute-api.eu-central-1.amazonaws.com/soupatko", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+  xhr.send(Number(slider.noUiSlider.get()));
+
   const correct = Number(slider.noUiSlider.get()) === graphValues.correctResult;
   const sortedHandles = (correct ? [graphValues.correctResult] : [graphValues.correctResult, Number(slider.noUiSlider.get())])
     .sort((a, b) => a - b);
@@ -75,3 +81,21 @@ slider.noUiSlider.on("set", () => {
 slider.noUiSlider.on("slide", () => {
   clearTimeout(checkTimeout);
 });
+
+/* const drawRadio = () => {
+  radio.innerHTML = "";
+  answers.forEach((answer, index) => {
+    const node = document.createElement("div");
+
+    const option = document.createElement("input");
+    option.type = "radio";
+
+    const label = document.createElement("label");
+    radio.appendChild(option);
+
+    label.appendChild(option);
+  });
+};
+
+drawRadio();
+ */

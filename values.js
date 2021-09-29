@@ -38,3 +38,5 @@ export const getColumns = (numOfColumns, min, max) => {
   });
   return arr;
 };
+
+export const answers = ["hruška", "jablko", "kiwi", "liči"];
