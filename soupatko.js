@@ -50,7 +50,9 @@ const drawResult = () => {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "https://8hgzzytibb.execute-api.eu-central-1.amazonaws.com/soupatko", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-  xhr.send(Number(slider.noUiSlider.get()));
+  xhr.send(JSON.stringify({
+    value: Number(slider.noUiSlider.get()),
+  }));
 
   const correct = Number(slider.noUiSlider.get()) === graphValues.correctResult;
   const sortedHandles = (correct ? [graphValues.correctResult] : [graphValues.correctResult, Number(slider.noUiSlider.get())])
