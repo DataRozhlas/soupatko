@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global noUiSlider, wNumb */
 // eslint-disable-next-line import/extensions
-import { graphValues } from "./values.js";
+import { graphValues, answers } from "./values.js";
 
 const height = 300;
 
@@ -11,6 +11,8 @@ const tooltips = slider.getElementsByClassName("noUi-tooltip");
 const container = document.getElementById("graphContainer");
 const radio = document.getElementById("inputRadio");
 container.style.height = `${height}px`;
+
+/* min, max, id, správná odpověď */
 
 const sliderOptions = {
   start: [(graphValues.max + graphValues.min) / 2],
@@ -56,7 +58,7 @@ const drawResult = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(Number(slider.noUiSlider.get())),
+    body: JSON.stringify({"val": slider.noUiSlider.get(), "id": "prdel"}),
   });
 
   result.json().then((e) => {
@@ -97,20 +99,24 @@ slider.noUiSlider.on("slide", () => {
   clearTimeout(checkTimeout);
 });
 
-/* const drawRadio = () => {
+const renderRadio = () => {
   radio.innerHTML = "";
   answers.forEach((answer, index) => {
     const node = document.createElement("div");
 
-    const option = document.createElement("input");
-    option.type = "radio";
-
     const label = document.createElement("label");
-    radio.appendChild(option);
 
+    const dot = document.createElement("input");
+    dot.type = "radio";
+    label.appendChild(dot);
+
+    label.htmlFor = `name-${index}`;
+    const option = document.createTextNode(answer);
     label.appendChild(option);
+    node.appendChild(label);
+
+    radio.appendChild(node);
   });
 };
 
-drawRadio();
- */
+renderRadio();
