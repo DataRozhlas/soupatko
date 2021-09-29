@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
 /* global noUiSlider, wNumb */
 // eslint-disable-next-line import/extensions
-import { graphValues, getColumns, answers } from "./values.js";
+import { graphValues } from "./values.js";
 
 const height = 300;
-const numberOfColumns = 5;
 
 const slider = document.getElementById("slider");
 const origins = slider.getElementsByClassName("noUi-origin");
