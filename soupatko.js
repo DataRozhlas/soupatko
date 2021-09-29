@@ -4,6 +4,7 @@
 import { graphValues, getColumns, answers } from "./values.js";
 
 const height = 300;
+const numberOfColumns = 5;
 
 const slider = document.getElementById("slider");
 const origins = slider.getElementsByClassName("noUi-origin");
@@ -32,26 +33,26 @@ const sliderOptions = {
 
 noUiSlider.create(slider, sliderOptions);
 
-const drawGraph = (size) => {
-  const columnArray = getColumns(graphValues.numOfColumns, graphValues.min, graphValues.max);
-  const column100 = Math.max(...columnArray);
-  columnArray.forEach((column) => {
+const drawGraph = (size, columns, width) => {
+  const column100 = Math.max(...columns);
+  columns.forEach((column, index) => {
     const columnDiv = document.createElement("div");
     setTimeout(() => { columnDiv.style.height = `${(column / column100) * size}px`; }, 1);
-    columnDiv.style.width = `${100 / graphValues.numOfColumns}%`;
+    if (index === 4) {
+      columnDiv.style.width = `${((graphValues.max - width[index]) / graphValues.max) * 100}%`;
+    } else columnDiv.style.width = `${((width[index + 1] - width[index]) / graphValues.max) * 100}%`;
     container.appendChild(columnDiv);
   });
 };
 
 let checkTimeout;
 
-const drawResult = () => {
-  console.log(Number(slider.noUiSlider.get()));
+const drawResult = async () => {
   /* const xhr = new XMLHttpRequest();
   xhr.open("POST", "https://8hgzzytibb.execute-api.eu-central-1.amazonaws.com/soupatko", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   xhr.send(Number(slider.noUiSlider.get())); */
-  fetch("https://8hgzzytibb.execute-api.eu-central-1.amazonaws.com/soupatko", {
+  const result = await fetch("https://8hgzzytibb.execute-api.eu-central-1.amazonaws.com/soupatko", {
     method: "POST", // or 'PUT'
     headers: {
       "Content-Type": "application/json",
@@ -59,26 +60,34 @@ const drawResult = () => {
     body: JSON.stringify(Number(slider.noUiSlider.get())),
   });
 
-  const correct = Number(slider.noUiSlider.get()) === graphValues.correctResult;
-  const sortedHandles = (correct ? [graphValues.correctResult] : [graphValues.correctResult, Number(slider.noUiSlider.get())])
-    .sort((a, b) => a - b);
-  const correctHandleIndex = sortedHandles.findIndex((value) => value === graphValues.correctResult);
-  const disabledHandleIndex = sortedHandles.findIndex((value) => value === Number(slider.noUiSlider.get()));
-  const newOptions = {
-    ...sliderOptions,
-    start: sortedHandles,
-    tooltips: correct ? [true] : [true, true],
-  };
-  slider.noUiSlider.destroy();
-  noUiSlider.create(slider, newOptions);
-  slider.setAttribute("disabled", true);
-  if (correct) {
-    origins[disabledHandleIndex].classList.add("correctAnswer");
-  } else origins[disabledHandleIndex].classList.add("disabledHandle");
-  tooltips[disabledHandleIndex].classList.add("disabledTooltip");
-  origins[correctHandleIndex].classList.add("correctAnswer");
-  tooltips[correctHandleIndex].classList.add("correctTooltip");
-  drawGraph(height);
+  result.json().then((e) => {
+    console.log(e);
+    const correctAnswer = e.value;
+    const columns = e.histo.vals;
+    const width = e.histo.brks;
+    console.log(correctAnswer);
+
+    const correct = Number(slider.noUiSlider.get()) === correctAnswer;
+    const sortedHandles = (correct ? [correctAnswer] : [correctAnswer, Number(slider.noUiSlider.get())])
+      .sort((a, b) => a - b);
+    const correctHandleIndex = sortedHandles.findIndex((value) => value === correctAnswer);
+    const disabledHandleIndex = sortedHandles.findIndex((value) => value === Number(slider.noUiSlider.get()));
+    const newOptions = {
+      ...sliderOptions,
+      start: sortedHandles,
+      tooltips: correct ? [true] : [true, true],
+    };
+    slider.noUiSlider.destroy();
+    noUiSlider.create(slider, newOptions);
+    slider.setAttribute("disabled", true);
+    if (correct) {
+      origins[disabledHandleIndex].classList.add("correctAnswer");
+    } else origins[disabledHandleIndex].classList.add("disabledHandle");
+    tooltips[disabledHandleIndex].classList.add("disabledTooltip");
+    origins[correctHandleIndex].classList.add("correctAnswer");
+    tooltips[correctHandleIndex].classList.add("correctTooltip");
+    drawGraph(height, columns, width);
+  });
 };
 
 slider.noUiSlider.on("set", () => {
