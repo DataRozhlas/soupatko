@@ -12,7 +12,7 @@ const createRandomNumberArray = (elementCount, min, max) => {
 export const graphValues = {
   result: 35,
   min: 0,
-  max: 50,
+  max: 200,
   numOfColumns: 10,
   correctResult: 7,
 };
