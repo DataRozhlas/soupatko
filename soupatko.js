@@ -5,7 +5,7 @@ import { graphValues, answers, answersGraph } from "./values.js";
 
 const height = 300;
 
-const soupatko = (id, min, max, correctAnswer) => {
+const soupatko = (idcko, minimum, maximum, decimal, interval, correctAnswer) => {
   const slider = document.getElementById("slider");
   const origins = slider.getElementsByClassName("noUi-origin");
   const tooltips = slider.getElementsByClassName("noUi-tooltip");
@@ -13,12 +13,12 @@ const soupatko = (id, min, max, correctAnswer) => {
   container.style.height = `${height}px`;
 
   const sliderOptions = {
-    start: [(graphValues.max + graphValues.min) / 2],
-    step: 1,
+    start: [(maximum + minimum) / 2],
+    step: interval,
     tooltips: [true],
     range: {
-      min: graphValues.min,
-      max: graphValues.max,
+      min: minimum,
+      max: maximum,
     },
     pips: {
       mode: "count",
@@ -26,7 +26,7 @@ const soupatko = (id, min, max, correctAnswer) => {
       density: 100,
       stepped: true,
     },
-    format: wNumb({ decimals: 0 }),
+    format: wNumb({ decimals: decimal }),
     keyboardSupport: true,
   };
 
@@ -52,14 +52,13 @@ const soupatko = (id, min, max, correctAnswer) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ val: slider.noUiSlider.get(), id: "prdel" }),
+      body: JSON.stringify({ val: slider.noUiSlider.get(), id: idcko }),
     });
 
     result.json().then((e) => {
       console.log(e);
-      const correctAnswer = e.value;
-      let columns = e.histo.vals;
-      if (!e.histo.vals) columns = [0, 0, 0, 0, 0];
+      /*       const correctAnswer = e.value; */
+      const columns = e.histo.vals;
       const width = e.histo.brks;
       console.log(correctAnswer);
 
@@ -95,6 +94,8 @@ const soupatko = (id, min, max, correctAnswer) => {
   });
 };
 
+/* ============================================================================== */
+
 const klikatko = (correctAnswer) => {
   const radio = document.getElementById("inputRadio");
   const radioGraph = document.getElementById("inputRadioGraph");
@@ -104,6 +105,7 @@ const klikatko = (correctAnswer) => {
     const column100 = Math.max(...answersGraph);
     answersGraph.forEach((value) => {
       const column = document.createElement("div");
+      column.style.height = `${(100 / answersGraph.length)}%`;
       setTimeout(() => { column.style.width = `${(value / column100) * 100}%`; }, 1);
       column.classList.add("horizontalColumn");
       radioGraph.appendChild(column);
@@ -128,7 +130,7 @@ const klikatko = (correctAnswer) => {
           document.getElementById(option).disabled = true;
           if (option === correctAnswer) {
             document.getElementById(option).classList.add("correctOption");
-          };
+          }
         });
         console.log(e.target.value);
         renderRadioGraph();
@@ -148,5 +150,5 @@ const klikatko = (correctAnswer) => {
 
 /* ============================================================================== */
 
-soupatko();
+soupatko("prdel", 0, 100, 1, 0.5, 69);
 klikatko("Noo Noo");
