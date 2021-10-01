@@ -52,13 +52,14 @@ const soupatko = (id, min, max, correctAnswer) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ "val": slider.noUiSlider.get(), "id": "prdel" }),
+      body: JSON.stringify({ val: slider.noUiSlider.get(), id: "prdel" }),
     });
 
     result.json().then((e) => {
       console.log(e);
       const correctAnswer = e.value;
-      const columns = e.histo.vals;
+      let columns = e.histo.vals;
+      if (!e.histo.vals) columns = [0, 0, 0, 0, 0];
       const width = e.histo.brks;
       console.log(correctAnswer);
 
@@ -148,4 +149,4 @@ const klikatko = (correctAnswer) => {
 /* ============================================================================== */
 
 soupatko();
-klikatko("had a mrkev");
+klikatko("Noo Noo");
