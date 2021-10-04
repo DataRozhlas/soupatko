@@ -97,19 +97,20 @@ const soupatko = (idcko, minimum, maximum, decimal, interval, correctAnswer) => 
 /* ============================================================================== */
 
 const klikatko = (correctAnswer) => {
-  const radio = document.getElementById("inputRadio");
-  const radioGraph = document.getElementById("inputRadioGraph");
+  const radio = document.getElementById("radioContainer");
 
   const renderRadioGraph = () => {
-    radioGraph.innerHTML = "";
     const column100 = Math.max(...answersGraph);
-    answersGraph.forEach((value) => {
-      const column = document.createElement("div");
-      column.style.height = `${(100 / answersGraph.length)}%`;
-      setTimeout(() => { column.style.width = `${(value / column100) * 100}%`; }, 1);
-      column.classList.add("horizontalColumn");
-      radioGraph.appendChild(column);
+    let i = 0;
+    document.querySelectorAll(".horizontalColumn").forEach((column) => {
+      console.log(answersGraph[i], `${(answersGraph[i] / column100) * 100}%`);
+      column.style.width = `${(answersGraph[i] / column100) * 100}%`;
+      column.classList.add("horizontalColumnVisible");
+      i += 1;
     });
+    /* const column = document.createElement("div");
+      column.classList.add("horizontalColumn");
+      radioGraph.appendChild(column); */
   };
 
   const renderRadio = () => {
@@ -132,15 +133,24 @@ const klikatko = (correctAnswer) => {
             document.getElementById(option).classList.add("correctOption");
           }
         });
-        console.log(e.target.value);
-        renderRadioGraph();
+        /* console.log(e.target.value); */
+        setTimeout(renderRadioGraph(), 1000);
       });
       node.appendChild(dot);
 
       label.htmlFor = answer;
       const option = document.createTextNode(answer);
+      label.classList.add("labelContainer");
       label.appendChild(option);
+
       node.appendChild(label);
+
+      const columnContainer = document.createElement("div");
+      columnContainer.classList.add("columnContainer");
+      const column = document.createElement("div");
+      column.classList.add("horizontalColumn");
+      columnContainer.appendChild(column);
+      node.appendChild(columnContainer);
 
       radio.appendChild(node);
     });
@@ -151,4 +161,4 @@ const klikatko = (correctAnswer) => {
 /* ============================================================================== */
 
 soupatko("prdel", 0, 100, 1, 0.5, 69);
-klikatko("Noo Noo");
+klikatko("Laa laa");

@@ -101,29 +101,25 @@ div#slider.slider.noUi-target {
 
 .radioContainer {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   height: fit-content;
   width: 50vw;
 }
 
-.inputRadio {
-  height: auto;
-}
-
 .optionsContainer {
   display: flex;
-  flex-flow: row wrap;
-  height: 1.5rem;
-  margin: 2px;
+  margin: 8px 0px;
   align-items: center;
   font-size: 1rem;
 }
 
-.inputRadioGraph {
-  width: 600px;
-  height: auto;
-  display: flex;
-  flex-flow: column wrap;
+.labelContainer  {
+  width: 20%;
+  margin: 0px 8px;
+}
+
+.columnContainer {
+  width: 80%;
 }
 
 .horizontalColumn {
@@ -134,6 +130,10 @@ div#slider.slider.noUi-target {
   height: 20px;
   transition: width 0.7s;
   transition-timing-function: ease-in-out;
+}
+
+.horizontalColumnVisible {
+  background-color: #2107b2;
 }
 
 .correctOption+label {
@@ -156,8 +156,5 @@ div#slider.slider.noUi-target {
   }
   .inputRadioGraph {
     width: 70vw;
-  }
-  .optionsContainer {
-    height: 2rem;
   }
 }

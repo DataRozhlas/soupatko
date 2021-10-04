@@ -39,5 +39,5 @@ export const getColumns = (numOfColumns, min, max) => {
   return arr;
 };
 
-export const answers = ["Tinky winky", "Dipsy", "Laa laa", "Po", "Noo Noo"];
+export const answers = ["Tinky winky", "Dipsy", "Laa laa", "Po", "Modrý automatický vysavač. Na přední straně má trubku zakončenou kartáčem, na zadní straně kartáče a růžovou polokouli."];
 export const answersGraph = [2, 30, 50, 15, 80];
