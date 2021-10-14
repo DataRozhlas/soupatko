@@ -3,14 +3,55 @@
 // eslint-disable-next-line import/extensions
 import { graphValues, answers, answersGraph } from "./values.js";
 
-const height = 300;
+const height = 70;
 
-const soupatko = (idcko, minimum, maximum, decimal, interval, correctAnswer) => {
-  const slider = document.getElementById("slider");
-  const origins = slider.getElementsByClassName("noUi-origin");
-  const tooltips = slider.getElementsByClassName("noUi-tooltip");
-  const container = document.getElementById("graphContainer");
-  container.style.height = `${height}px`;
+const soupatko = (idcko, title, minimum, maximum, decimal, interval, correctAnswer) => {
+  const soupatkoContainer = document.getElementById(idcko);
+  soupatkoContainer.classList.add("soupatkoContainer");
+
+  soupatkoContainer.innerHTML = "";
+
+  const node = document.createElement("div");
+
+  const questionContainer = document.createElement("div");
+  questionContainer.classList.add("questionContainer");
+  const question = document.createTextNode(title);
+  questionContainer.appendChild(question);
+  node.appendChild(questionContainer);
+
+  const descriptionContainer = document.createElement("div");
+  descriptionContainer.classList.add("descriptionContainer");
+  node.appendChild(descriptionContainer);
+
+  const soupejteContainer = document.createElement("div");
+  soupejteContainer.classList.add("soupejteContainer");
+  const soupejte = document.createTextNode("← vyberte váš tip →");
+  soupejteContainer.appendChild(soupejte);
+  node.appendChild(soupejteContainer);
+
+  const container = document.createElement("div");
+  container.id = "graphContainer";
+  container.classList.add("graphContainer");
+  node.appendChild(container);
+
+  const slider = document.createElement("div");
+  slider.id = "slider";
+  slider.classList.add("slider");
+  node.appendChild(slider);
+
+  const range = document.createElement("div");
+  range.classList.add("range");
+  const minContainer = document.createElement("div");
+  const min = document.createTextNode(minimum);
+  minContainer.appendChild(min);
+  const maxContainer = document.createElement("div");
+  const max = document.createTextNode(maximum);
+  maxContainer.appendChild(max);
+  range.appendChild(minContainer);
+  range.appendChild(maxContainer);
+  node.appendChild(range);
+
+  soupatkoContainer.appendChild(node);
 
   const sliderOptions = {
     start: [(maximum + minimum) / 2],
@@ -20,24 +61,25 @@ const soupatko = (idcko, minimum, maximum, decimal, interval, correctAnswer) => 
       min: minimum,
       max: maximum,
     },
-    pips: {
-      mode: "count",
-      values: 2,
-      density: 100,
-      stepped: true,
-    },
     format: wNumb({ decimals: decimal }),
     keyboardSupport: true,
   };
 
   noUiSlider.create(slider, sliderOptions);
 
+  const origins = slider.getElementsByClassName("noUi-origin");
+  const tooltips = slider.getElementsByClassName("noUi-tooltip");
+
   const drawGraph = (size, columns, width) => {
     const column100 = Math.max(...columns);
     columns.forEach((column, index) => {
       const columnDiv = document.createElement("div");
-      setTimeout(() => { columnDiv.style.height = `${(column / column100) * size}px`; }, 1);
-      if (index === 4) {
+      setTimeout(() => {
+        columnDiv.style.height = `${(column / column100) * size}px`;
+        columnDiv.style.background = "#E5E5E5";
+        descriptionContainer.innerHTML = "Jak tipovali ostatní čtenáři";
+      }, 1000);
+      if (index === (columns.length - 1)) {
         columnDiv.style.width = `${((graphValues.max - width[index]) / graphValues.max) * 100}%`;
       } else columnDiv.style.width = `${((width[index + 1] - width[index]) / graphValues.max) * 100}%`;
       container.appendChild(columnDiv);
@@ -81,15 +123,23 @@ const soupatko = (idcko, minimum, maximum, decimal, interval, correctAnswer) => 
       tooltips[disabledHandleIndex].classList.add("disabledTooltip");
       origins[correctHandleIndex].classList.add("correctAnswer");
       tooltips[correctHandleIndex].classList.add("correctTooltip");
+
+      const tagContainer = document.createElement("div");
+      tagContainer.classList.add("tagContainer");
+      const correctTag = document.createTextNode("správná odpověď");
+      tagContainer.appendChild(correctTag);
+      tooltips[correctHandleIndex].appendChild(tagContainer);
+
       drawGraph(height, columns, width);
     });
   };
 
   slider.noUiSlider.on("set", () => {
-    checkTimeout = setTimeout(drawResult, 1000);
+    checkTimeout = setTimeout(drawResult, 300);
   });
 
   slider.noUiSlider.on("slide", () => {
+    soupejteContainer.innerHTML = "";
     clearTimeout(checkTimeout);
   });
 };
@@ -119,7 +169,8 @@ const klikatko = (correctAnswer) => {
       const node = document.createElement("div");
       node.classList.add("optionsContainer");
 
-      const label = document.createElement("label");
+      const dotTextContainer = document.createElement("div");
+      dotTextContainer.classList.add("dotTextContainer");
 
       const dot = document.createElement("input");
       dot.type = "radio";
@@ -134,16 +185,18 @@ const klikatko = (correctAnswer) => {
           }
         });
         /* console.log(e.target.value); */
-        setTimeout(renderRadioGraph(), 1000);
+        setTimeout(renderRadioGraph(), 300);
       });
-      node.appendChild(dot);
+      dotTextContainer.appendChild(dot);
 
+      const label = document.createElement("label");
       label.htmlFor = answer;
       const option = document.createTextNode(answer);
       label.classList.add("labelContainer");
       label.appendChild(option);
 
-      node.appendChild(label);
+      dotTextContainer.appendChild(label);
+      node.appendChild(dotTextContainer);
 
       const columnContainer = document.createElement("div");
       columnContainer.classList.add("columnContainer");
@@ -160,5 +213,5 @@ const klikatko = (correctAnswer) => {
 
 /* ============================================================================== */
 
-soupatko("prdel", 0, 100, 1, 0.5, 69);
+soupatko("prdel", "Kolik chtějí ženy loupáků?", 0, 100, 1, 0.5, 69);
 klikatko("Laa laa");

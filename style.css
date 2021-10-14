@@ -1,44 +1,96 @@
-* {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: FiraSans-Light;
+  src: url("./font/FiraSans-Light.ttf");
 }
 
-.contentContainer {
+@font-face {
+  font-family: FiraSans-Regular;
+  src: url("./font/FiraSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: FiraSans-Bold;
+  src: url("./font/FiraSans-Bold.ttf");
+}
+
+* {
+  box-sizing: border-box;
+  font-family: FiraSans-Regular, Helvetica, sans-serif;
+}
+
+.soupatkoContainer {
   width: 50vw;
   margin: 10vw;
 }
 
+.questionContainer {
+  font-size: large;
+  margin-bottom: 20px;
+}
+
+.descriptionContainer {
+  display: flex;
+  justify-content: flex-end;
+  font-size: smaller;
+  color: #a0a0a0;
+  height: 20px;
+  padding-right: 5px;
+  margin-bottom: 10px;
+}
+
+.soupejteContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  height: 20px;
+  position: relative;
+  top: 70px;
+  margin-top: -70px;
+  color: #767676;
+}
+
+.range {
+  color: #767676;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .graphContainer {
+  height: 70px;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 20px;
+  position: relative;
 }
 
 .graphContainer>div {
   display: inline-block;
-  background: #B20707;
-  border-left: 2px solid white;
-  border-right: 2px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+  border-bottom: 2px solid white;
   height: 1px;
   transition: height 0.8s;
   transition-timing-function: cubic-bezier(0, 0, 0.58, 1);
 }
 
 div#slider.slider.noUi-target {
-  background-color: #f2f2f2;
+  background-color: transparent;
   border-radius: 0px;
+  border-width: 0 0 1px 0;
+  border-color: #DDDDDD;
   box-shadow: none;
+  top: -18px;
+  margin-bottom: -10px;
 }
 
 #slider .noUi-handle {
   box-shadow: none;
   border: none;
-  border-radius: 0;
-  border-radius: 0;
-  background: #000000;
+  border-radius: 20px;
+  background: #666666;
   height: 18px;
   width: 18px;
-  top: -1px;
+  top: 9px;
   right: -9px;
 }
 
@@ -55,36 +107,35 @@ div#slider.slider.noUi-target {
 }
 
 #slider .correctAnswer>div {
-  background: #5982A2;
+  background: #EB8B8B;
 }
 
 #slider .disabledHandle>div {
-  background: grey;
+  background: #666666;
 }
 
 #slider .noUi-tooltip.disabledTooltip {
-  background-color: grey;
 }
 
 #slider .noUi-tooltip.correctTooltip {
-  background-color: #5982A2;
-  height: 60px;
-  width: 60px;
-  padding-top: 12px;
-  font-size: 1.5rem;
+  color: #EB8B8B;
+  top: 12px;
 }
 
 #slider .noUi-tooltip {
-  width: 42px;
-  height: 42px;
+  bottom: 15px;
+  font-weight: 600;
   border: none;
-  -webkit-mask: url("pin.svg") no-repeat 100% 100%;
-  mask: url("pin.svg") no-repeat 100% 100%;
-  -webkit-mask-size: cover;
-  mask-size: cover;
-  background-color: black;
-  color: white;
+  background-color: transparent;
+  color: #666666;
   padding-top: 9px;
+}
+
+.tagContainer {
+  font-weight: 300;
+  color: #666666;
+  font-size: smaller;
+  margin-top: 3px;
 }
 
 .noUi-pips.noUi-pips-horizontal {
@@ -100,32 +151,35 @@ div#slider.slider.noUi-target {
 }
 
 .radioContainer {
-  display: flex;
-  flex-flow: column wrap;
-  height: fit-content;
   width: 50vw;
 }
 
 .optionsContainer {
   display: flex;
   margin: 8px 0px;
-  align-items: center;
   font-size: 1rem;
+  align-items: center;
+  height: auto;
+}
+
+.dotTextContainer {
+  display: flex;
+  width: 30%;
 }
 
 .labelContainer  {
-  width: 20%;
   margin: 0px 8px;
+  height: auto;
 }
 
 .columnContainer {
-  width: 80%;
+  width: 70%;
 }
 
 .horizontalColumn {
   margin: 0px 10px;
   border: 2px solid white;
-  background-color: #B20707;
+  background-color: white;
   width: 0px;
   height: 20px;
   transition: width 0.7s;
@@ -133,7 +187,7 @@ div#slider.slider.noUi-target {
 }
 
 .horizontalColumnVisible {
-  background-color: #2107b2;
+  background-color: #B20707;
 }
 
 .correctOption+label {
@@ -143,18 +197,23 @@ div#slider.slider.noUi-target {
 
 @media only screen and (max-width: 400px) {
   .optionsContainer {
-    font-size: 1.7rem !important;
+    font-size: 1.5rem !important;
   }
 }
 
 @media only screen and (max-width: 1000px) {
-  .optionsContainer {
-    font-size: 1.2rem;
-  }
   .radioContainer {
-    width: 100vw;
+    width: 95vw;
   }
-  .inputRadioGraph {
-    width: 70vw;
+  .optionsContainer {
+    flex-flow: column;
+    font-size: 1.2rem;
+    align-items: flex-start;
+  }
+  .dotTextContainer {
+    width: 80%;
+  }
+  .columnContainer {
+    width: 100%;
   }
 }
