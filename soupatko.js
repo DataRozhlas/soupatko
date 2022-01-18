@@ -75,7 +75,7 @@ export const soupatko = (idcko, title, minimum, maximum, buckets, decimal, inter
     const binSize = (maximum - minimum) / buckets;
     const binCount = new Array(buckets).fill(0);
     brks.forEach((brk, i) => {
-      binCount[Math.round(brk / binSize)] += vals[i];
+      binCount[Math.round((brk - minimum) / binSize)] += vals[i];
     });
 
     const column100 = Math.max(...binCount);
