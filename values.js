@@ -40,4 +40,4 @@ export const getColumns = (numOfColumns, min, max) => {
 };
 
 export const answers = ["Tinky winky", "Dipsy", "Laa laa", "Po", "Modrý automatický vysavač"];
-export const answersGraph = [2, 30, 50, 15, 80];
+export const answersGraph = [150, 200, 250, 300];

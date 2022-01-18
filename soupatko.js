@@ -1,11 +1,11 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable max-len */
 /* global noUiSlider, wNumb */
 // eslint-disable-next-line import/extensions
-import { graphValues, answers, answersGraph } from "./values.js";
 
 const height = 70;
 
-const soupatko = (idcko, title, minimum, maximum, decimal, interval, correctAnswer) => {
+export const soupatko = (idcko, title, minimum, maximum, buckets, decimal, interval, correctAnswer) => {
   const soupatkoContainer = document.getElementById(idcko);
   soupatkoContainer.classList.add("soupatkoContainer");
 
@@ -70,18 +70,24 @@ const soupatko = (idcko, title, minimum, maximum, decimal, interval, correctAnsw
   const origins = slider.getElementsByClassName("noUi-origin");
   const tooltips = slider.getElementsByClassName("noUi-tooltip");
 
-  const drawGraph = (size, columns, width) => {
-    const column100 = Math.max(...columns);
-    columns.forEach((column, index) => {
+  const drawGraph = (height, vals, brks, minimum, maximum, buckets) => {
+    // binning
+    const binSize = (maximum - minimum) / buckets;
+    const binCount = new Array(buckets).fill(0);
+    brks.forEach((brk, i) => {
+      binCount[Math.round(brk / binSize)] += vals[i];
+    });
+
+    const column100 = Math.max(...binCount);
+
+    binCount.forEach((column) => {
       const columnDiv = document.createElement("div");
       setTimeout(() => {
-        columnDiv.style.height = `${(column / column100) * size}px`;
+        columnDiv.style.height = `${(column / column100) * height}px`;
         columnDiv.style.background = "#E5E5E5";
         descriptionContainer.innerHTML = "Jak tipovali ostatní čtenáři";
       }, 1000);
-      if (index === (columns.length - 1)) {
-        columnDiv.style.width = `${((graphValues.max - width[index]) / graphValues.max) * 100}%`;
-      } else columnDiv.style.width = `${((width[index + 1] - width[index]) / graphValues.max) * 100}%`;
+      columnDiv.style.width = "100%";
       container.appendChild(columnDiv);
     });
   };
@@ -98,12 +104,6 @@ const soupatko = (idcko, title, minimum, maximum, decimal, interval, correctAnsw
     });
 
     result.json().then((e) => {
-      console.log(e);
-      /*       const correctAnswer = e.value; */
-      const columns = e.histo.vals;
-      const width = e.histo.brks;
-      console.log(correctAnswer);
-
       const correct = Number(slider.noUiSlider.get()) === correctAnswer;
       const sortedHandles = (correct ? [correctAnswer] : [correctAnswer, Number(slider.noUiSlider.get())])
         .sort((a, b) => a - b);
@@ -130,7 +130,7 @@ const soupatko = (idcko, title, minimum, maximum, decimal, interval, correctAnsw
       tagContainer.appendChild(correctTag);
       tooltips[correctHandleIndex].appendChild(tagContainer);
 
-      drawGraph(height, columns, width);
+      drawGraph(height, e.histo.vals, e.histo.brks, minimum, maximum, buckets);
     });
   };
 
@@ -144,23 +144,19 @@ const soupatko = (idcko, title, minimum, maximum, decimal, interval, correctAnsw
   });
 };
 
-/* ============================================================================== */
+/*
 
-const klikatko = (correctAnswer) => {
+export const klikatko = (correctAnswer) => {
   const radio = document.getElementById("radioContainer");
 
   const renderRadioGraph = () => {
     const column100 = Math.max(...answersGraph);
     let i = 0;
     document.querySelectorAll(".horizontalColumn").forEach((column) => {
-      console.log(answersGraph[i], `${(answersGraph[i] / column100) * 100}%`);
       column.style.width = `${(answersGraph[i] / column100) * 100}%`;
       column.classList.add("horizontalColumnVisible");
       i += 1;
     });
-    /* const column = document.createElement("div");
-      column.classList.add("horizontalColumn");
-      radioGraph.appendChild(column); */
   };
 
   const renderRadio = () => {
@@ -184,7 +180,7 @@ const klikatko = (correctAnswer) => {
             document.getElementById(option).classList.add("correctOption");
           }
         });
-        /* console.log(e.target.value); */
+
         setTimeout(renderRadioGraph(), 300);
       });
       dotTextContainer.appendChild(dot);
@@ -211,7 +207,4 @@ const klikatko = (correctAnswer) => {
   renderRadio();
 };
 
-/* ============================================================================== */
-
-soupatko("prdel", "Kolik chtějí ženy loupáků?", 0, 100, 1, 0.5, 69);
-klikatko("Laa laa");
+*/
