@@ -72,7 +72,7 @@ export const soupatko = (idcko, title, minimum, maximum, buckets, decimal, inter
 
   const drawGraph = (height, vals, brks, minimum, maximum, buckets) => {
     // binning
-    const binSize = (maximum - minimum) / buckets;
+    const binSize = (maximum - minimum) / (buckets - 1);
     const binCount = new Array(buckets).fill(0);
     brks.forEach((brk, i) => {
       binCount[Math.round((brk - minimum) / binSize)] += vals[i];
